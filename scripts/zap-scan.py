@@ -44,7 +44,7 @@ def run():
         token = request('/login', {'username': 'zap' + role, 'password': os.environ['SCAN_PASSWORD']})['token']
         tokens.append(token)
         api('core', 'action', 'newSession', name='', overwrite='true')
-        if role == 'administrador':
+        if any(rule['description'] == 'Bearer local' for rule in api('replacer', 'view', 'rules')['rules']):
             api('replacer', 'action', 'removeRule', description='Bearer local')
         api('replacer', 'action', 'addRule', description='Bearer local', enabled='true', matchType='REQ_HEADER', matchRegex='false', matchString='Authorization', replacement='Bearer ' + token)
         context = api('context', 'action', 'newContext', contextName='donantes')['contextId']

@@ -13,7 +13,7 @@ function createApp({ store, secret, authLimit = 20 }) {
   const app = express();
   app.disable('x-powered-by');
   app.disable('etag');
-  app.use(helmet({ contentSecurityPolicy: { directives: { styleSrc: ["'self'"] } } }));
+  app.use(helmet({ contentSecurityPolicy: { directives: { styleSrc: ["'self'"], fontSrc: ["'self'"] } } }));
   app.use((_req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
