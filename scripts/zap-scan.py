@@ -4,6 +4,7 @@ import os
 import time
 import urllib.parse
 import urllib.request
+import urllib.error
 from pathlib import Path
 
 TARGET = os.environ.get('SCAN_TARGET', 'http://127.0.0.1:3000')
@@ -14,8 +15,11 @@ REPORT = Path(os.environ.get('SCAN_REPORT_DIR', 'reports/seguridad'))
 def api(component, kind, action, **params):
     params['apikey'] = os.environ['ZAP_API_KEY']
     url = f'{ZAP}/JSON/{component}/{kind}/{action}/?{urllib.parse.urlencode(params)}'
-    with urllib.request.urlopen(url, timeout=90) as response:
-        result = json.load(response)
+    try:
+        with urllib.request.urlopen(url, timeout=90) as response:
+            result = json.load(response)
+    except urllib.error.HTTPError as error:
+        raise RuntimeError(error.read().decode()) from None
     if 'code' in result:
         raise RuntimeError(result)
     return result
@@ -40,9 +44,12 @@ def run():
         token = request('/login', {'username': 'zap' + role, 'password': os.environ['SCAN_PASSWORD']})['token']
         tokens.append(token)
         api('core', 'action', 'newSession', name='', overwrite='true')
+        if role == 'administrador':
+            api('replacer', 'action', 'removeRule', description='Bearer local')
         api('replacer', 'action', 'addRule', description='Bearer local', enabled='true', matchType='REQ_HEADER', matchRegex='false', matchString='Authorization', replacement='Bearer ' + token)
         context = api('context', 'action', 'newContext', contextName='donantes')['contextId']
-        api('context', 'action', 'includeInContext', contextName='donantes', regex=TARGET.replace('.', '\\.') + '/.*')
+        api('context', 'action', 'includeInContext', contextName='donantes', regex=TARGET.replace('.', '\\.') + '(/.*)?')
+        api('context', 'action', 'setContextInScope', contextName='donantes', booleanInScope='true')
         # Sembrar un registro permite comprobar el borrado autorizado.
         donor = request('/donantes', {'name': 'Persona Prueba', 'email': role + '@example.test'}, token)
         spec = json.loads(Path('openapi.json').read_text(encoding='utf-8'))
@@ -51,6 +58,7 @@ def run():
         spec_path = (REPORT / ('openapi-' + role + '.json')).resolve()
         spec_path.write_text(json.dumps(spec), encoding='utf-8')
         imported = api('openapi', 'action', 'importFile', file=str(spec_path), target=TARGET, contextId=context)
+        api('core', 'action', 'accessUrl', url=TARGET + '/', followRedirects='false')
         api('ascan', 'action', 'setOptionThreadPerHost', Integer=2)
         api('ascan', 'action', 'setOptionMaxRuleDurationInMins', Integer=1)
         api('ascan', 'action', 'setOptionMaxScanDurationInMins', Integer=10)

@@ -4,14 +4,19 @@ const helmet = require('helmet');
 const { rateLimit } = require('express-rate-limit');
 const { verifyPassword, hashPassword } = require('./store');
 const dummyHash = hashPassword('dummy-password-for-timing');
-const validUsername = v => typeof v === 'string' && /^[a-zA-Z0-9_]{3,40}$/.test(v);
+const validUsername = v => typeof v === 'string' && /^\w{3,40}$/.test(v);
 const validPassword = v => typeof v === 'string' && v.length >= 12 && v.length <= 128;
 
 function createApp({ store, secret, authLimit = 20 }) {
   if (typeof secret !== 'string' || secret.length < 32) throw new Error('JWT_SECRET debe tener al menos 32 caracteres');
   const app = express();
   app.disable('x-powered-by');
+  app.disable('etag');
   app.use(helmet());
+  app.use((_req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+  });
   app.use(express.json({ limit: '16kb' }));
   app.use(['/login', '/register'], rateLimit({ windowMs: 15 * 60 * 1000, limit: authLimit, standardHeaders: 'draft-8', legacyHeaders: false }));
   app.get('/health', (_req, res) => res.json({ status: 'ok' }));
@@ -61,7 +66,7 @@ function createApp({ store, secret, authLimit = 20 }) {
   });
   app.use((_req, res) => res.status(404).json({ error: 'Ruta no encontrada' }));
   app.use((err, _req, res, _next) => {
-    const status = err.type === 'entity.parse.failed' ? 400 : err.type === 'entity.too.large' ? 413 : 500;
+    const status = new Map([['entity.parse.failed', 400], ['entity.too.large', 413]]).get(err.type) || 500;
     res.status(status).json({ error: status === 500 ? 'Error interno' : 'Solicitud inválida' });
   });
   return app;

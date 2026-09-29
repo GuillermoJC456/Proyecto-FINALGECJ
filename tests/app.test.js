@@ -24,6 +24,7 @@ test('configuración, salud, cabeceras y rutas desconocidas', async () => {
   expect(res.status).toBe(200);
   expect(res.headers['x-content-type-options']).toBe('nosniff');
   expect(res.headers['x-powered-by']).toBeUndefined();
+  expect(res.headers['cache-control']).toBe('no-store');
   expect((await request(app).get('/missing')).status).toBe(404);
 });
 test('registro siempre usuario; duplicado y datos inválidos', async () => {
