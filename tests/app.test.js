@@ -43,7 +43,17 @@ test('login verifica contraseña y no confía en rol enviado', async () => {
   const res = await request(app).post('/login').send({ username: 'tester', password, role: 'administrador' });
   const claims = jwt.verify(res.body.token, secret);
   expect(claims.role).toBe('usuario');
+  expect(res.body.user).toEqual({ username: 'tester', role: 'usuario' });
   expect(claims.exp - claims.iat).toBe(900);
+});
+test('interfaz pública y recursos con cabeceras de seguridad', async () => {
+  const page = await request(app).get('/');
+  expect(page.status).toBe(200);
+  expect(page.type).toBe('text/html');
+  expect(page.text).toContain('Donantes');
+  expect(page.headers['content-security-policy']).toContain("script-src 'self'");
+  expect((await request(app).get('/app.js')).type).toBe('text/javascript');
+  expect((await request(app).get('/styles.css')).type).toBe('text/css');
 });
 test('rechaza JWT ausente, alterado, vencido, algoritmo y audiencia incorrectos', async () => {
   const good = await token();

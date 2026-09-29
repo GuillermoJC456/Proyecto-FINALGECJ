@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#245544">
+  <meta name="description" content="Un espacio sencillo para gestionar tu registro de personas donantes.">
+  <title>Donantes · Registro de personas</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Donantes, inicio"><span class="brand-icon" aria-hidden="true">✳</span> Donantes<span class="brand-dot">.</span></a>
+    <div id="account" class="account" hidden><span id="account-name"></span><span id="role" class="badge"></span><button id="logout" class="text-button" type="button">Salir <span aria-hidden="true">↗</span></button></div>
+    <span id="welcome-label" class="muted small">Personas que hacen la diferencia</span>
+  </header>
+
+  <main>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section id="auth-view" class="auth-layout" aria-labelledby="intro-title">
+      <div class="intro">
+        <p class="eyebrow"><span class="small-dot"></span> CADA PERSONA CUENTA</p>
+        <h1 id="intro-title">Un pequeño gesto.<br>Un gran <em>impacto.</em></h1>
+        <p class="intro-text">Un espacio para registrar a quienes ayudan y mantener sus datos organizados. Simple, cercano y en un solo lugar.</p>
+        <div class="intro-note"><span class="note-icon" aria-hidden="true">↗</span><p>Más tiempo para ayudar.<br><span class="muted">Menos tiempo para administrar.</span></p></div>
+        <div class="art" aria-hidden="true"><div class="art-circle one"></div><div class="art-circle two"></div><div class="art-center">+</div><span>JUNTOS SUMAMOS</span></div>
+      </div>
+      <div class="auth-card">
+        <div class="tabs" aria-label="Acceso a la cuenta"><button id="login-tab" class="tab active" type="button" aria-pressed="true">Iniciar sesión</button><button id="register-tab" class="tab" type="button" aria-pressed="false">Crear cuenta</button></div>
+        <h2 id="auth-title">Qué bueno verte.</h2>
+        <p id="auth-description" class="muted">Ingresa a tu cuenta para continuar.</p>
+        <form id="auth-form">
+          <label for="username">Usuario</label>
+          <input id="username" name="username" autocomplete="username" required minlength="3" maxlength="40" pattern="[A-Za-z0-9_]{3,40}" placeholder="Tu nombre de usuario" aria-describedby="username-hint">
+          <p id="username-hint" class="field-hint">De 3 a 40 letras, números o guion bajo.</p>
+          <label for="password">Contraseña</label>
+          <div class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" required minlength="12" maxlength="128" placeholder="Tu contraseña" aria-describedby="password-hint"><button id="toggle-password" type="button" aria-label="Mostrar contraseña" aria-pressed="false">Ver</button></div>
+          <p id="password-hint" class="field-hint">Al menos 12 caracteres.</p>
+          <p id="auth-error" class="form-error" role="alert" hidden></p>
+          <button id="auth-submit" class="button primary full" type="submit">Entrar <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-footer">Tus registros, siempre organizados.</p>
+      </div>
+    </section>
+
+    <section id="dashboard" hidden aria-labelledby="dashboard-title">
+      <div class="page-heading"><div><p class="eyebrow">TU ESPACIO DE GESTIÓN</p><h1 id="dashboard-title">Personas donantes</h1><p id="scope-description" class="muted">Consulta y organiza tus registros.</p></div><button id="new-donor" class="button primary" type="button"><span aria-hidden="true">＋</span> Registrar donante</button></div>
+      <div class="summary"><div class="summary-icon" aria-hidden="true">♡</div><div><span id="total" class="total">0</span><span id="total-label" class="muted">personas registradas</span></div><p>Cada nombre, una oportunidad<br>de hacer algo bueno.</p></div>
+      <div class="list-card">
+        <div class="list-toolbar"><div><h2>Directorio</h2><p id="result-count" class="muted small">Tus personas donantes en un solo lugar.</p></div><div class="search-wrap"><label class="sr-only" for="search">Buscar por nombre o correo</label><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar por nombre o correo" maxlength="254"></div><button id="refresh" class="icon-button" type="button" aria-label="Actualizar lista" title="Actualizar lista">↻</button></div>
+        <p id="list-error" class="form-error list-message" role="alert" hidden></p>
+        <div id="loading" class="empty" hidden>Cargando personas donantes…</div>
+        <div id="empty" class="empty" hidden><span class="empty-icon" aria-hidden="true">♡</span><h3 id="empty-title">Todo empieza con una persona.</h3><p id="empty-description">Registra a tu primer donante para comenzar.</p></div>
+        <div id="table-wrap" class="table-wrap" hidden><table><caption class="sr-only">Directorio de personas donantes</caption><thead><tr><th scope="col">PERSONA</th><th scope="col">CORREO ELECTRÓNICO</th><th id="actions-heading" scope="col" hidden><span class="sr-only">Acciones</span></th></tr></thead><tbody id="donors"></tbody></table></div>
+        <div class="list-footer"><span id="list-footer-text">Solo tú y el administrador pueden consultar tus registros.</span><span class="footer-dot" aria-hidden="true"></span></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>Donantes. Un registro con propósito.</span><span>Hecho para ayudar.</span></footer>
+
+  <dialog id="donor-dialog" aria-labelledby="donor-title">
+    <div class="dialog-heading"><div><p class="eyebrow">SUMA UNA PERSONA</p><h2 id="donor-title">Registrar donante</h2></div><button class="icon-button" id="close-donor" type="button" aria-label="Cerrar formulario">×</button></div>
+    <p class="muted">Agrega sus datos de contacto al directorio.</p>
+    <form id="donor-form"><label for="donor-name">Nombre completo</label><input id="donor-name" name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Ej. Ana Pérez"><label for="donor-email">Correo electrónico</label><input id="donor-email" name="email" required type="email" maxlength="254" autocomplete="email" placeholder="ana@ejemplo.com"><p id="donor-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-donor" class="button secondary" type="button">Cancelar</button><button id="save-donor" class="button primary" type="submit">Guardar donante</button></div></form>
+  </dialog>
+  <dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">¿Eliminar este registro?</h2><p id="delete-description"></p><p class="muted small">Esta acción no se puede deshacer.</p><p id="delete-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-delete" class="button secondary" type="button">Conservar</button><button id="confirm-delete" class="button danger" type="button">Eliminar donante</button></div></dialog>
+</body>
+</html>

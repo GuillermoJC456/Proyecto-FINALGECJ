@@ -1,6 +1,6 @@
 # Registro de personas donantes
 
-API académica en Node.js 24, Express y SQLite, desarrollada a partir de `app-1.txt`, conservado como referencia. No tiene interfaz web.
+API académica en Node.js 24, Express y SQLite, desarrollada a partir de `app-1.txt`, conservado como referencia. Incluye una interfaz web minimalista y adaptable a móviles, sin dependencias de frontend.
 
 ## Ejecutar
 
@@ -11,6 +11,8 @@ pnpm install --frozen-lockfile
 $env:JWT_SECRET = node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 pnpm start
 ```
+
+Abre **http://localhost:3000** para usar la interfaz. Puedes crear una cuenta, iniciar sesión, buscar y registrar donantes. Un administrador también puede eliminarlos con confirmación. La sesión permanece en memoria y se cierra al recargar o al vencer los 15 minutos.
 
 La API escucha en `http://localhost:3000`. SQLite se guarda en `data/donantes.sqlite`; `DB_PATH` y `PORT` son configurables. La clave debe mantenerse estable entre reinicios y guardarse en un gestor de secretos. No se incluye ninguna credencial real.
 
@@ -50,10 +52,14 @@ Los resultados de la entrega están en `reports/unitarias`, `reports/seguridad` 
 
 Utilizar exclusivamente una instancia desechable con datos ficticios. Arrancar ZAP daemon en `127.0.0.1:8090` con clave API. Crear `zapusuario` mediante `/register` y `zapadministrador` mediante `pnpm admin`, con la misma contraseña temporal. Definir `SCAN_PASSWORD` y `ZAP_API_KEY`, y ejecutar `python scripts/zap-scan.py`. La herramienta acepta únicamente destino local; importa `openapi.json`, establece Bearer por rol y produce reportes sin los tokens de autenticación.
 
-El escaneo cubre salud y rutas de donantes, incluyendo el borrado con ambos roles. Los flujos públicos de registro/login tienen pruebas automatizadas y se utilizan para preparar el escaneo. La API responde JSON; no existe una interfaz HTML sobre la cual evaluar XSS de navegador. Las reglas activas de XSS/SQLi y los casos de abuso aportan evidencia dentro de ese alcance.
+El escaneo cubre salud y rutas de donantes, incluyendo el borrado con ambos roles. Los flujos públicos de registro/login tienen pruebas automatizadas y se utilizan para preparar el escaneo. La API responde JSON y la interfaz utiliza recursos locales y CSP; los datos de donantes se insertan con textContent. Las reglas activas de XSS/SQLi y los casos de abuso aportan evidencia dentro de ese alcance.
 
 Documentación oficial: [ZAP API](https://www.zaproxy.org/docs/api/), [cobertura JavaScript en SonarQube](https://docs.sonarsource.com/sonarqube-server/2025.5/analyzing-source-code/test-coverage/javascript-typescript-test-coverage), [acción SonarQube](https://github.com/SonarSource/sonarqube-scan-action).
 
 ## Límites del prototipo
 
 Se requieren HTTPS y un proxy configurado correctamente antes de exponerlo. El limitador reside en memoria por proceso; el hashing síncrono y SQLite son adecuados para este ejercicio, no para alta concurrencia. No incluye recuperación de contraseña, revocación individual de tokens, auditoría de operaciones ni copias de respaldo automatizadas. El endpoint de salud comprueba el proceso, no la disponibilidad completa de almacenamiento.
+
+## Verificación de la interfaz
+
+El reporte `reports/interfaz/prueba-navegador.json` registra la comprobación real en Chromium de registro, login, alta, búsqueda, duplicados, permisos, confirmación de borrado, sesión vencida y vista móvil. Esta comprobación es independiente de la cobertura Jest del backend.

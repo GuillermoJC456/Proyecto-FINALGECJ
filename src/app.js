@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('node:path');
 const jwt = require('jsonwebtoken');
 const helmet = require('helmet');
 const { rateLimit } = require('express-rate-limit');
@@ -12,7 +13,7 @@ function createApp({ store, secret, authLimit = 20 }) {
   const app = express();
   app.disable('x-powered-by');
   app.disable('etag');
-  app.use(helmet());
+  app.use(helmet({ contentSecurityPolicy: { directives: { styleSrc: ["'self'"] } } }));
   app.use((_req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
@@ -34,7 +35,7 @@ function createApp({ store, secret, authLimit = 20 }) {
     const valid = verifyPassword(password, user ? user.password : dummyHash);
     if (!user || !valid) return res.status(401).json({ error: 'Credenciales inválidas' });
     const token = jwt.sign({ role: user.role }, secret, { algorithm: 'HS256', subject: String(user.id), expiresIn: '15m', issuer: 'donantes-api', audience: 'donantes-client' });
-    res.json({ token, tokenType: 'Bearer', expiresIn: 900 });
+    res.json({ token, tokenType: 'Bearer', expiresIn: 900, user: { username: user.username, role: user.role } });
   });
   app.use('/donantes', (req, res, next) => {
     const match = /^Bearer (\S+)$/.exec(req.headers.authorization || '');
@@ -64,6 +65,7 @@ function createApp({ store, secret, authLimit = 20 }) {
     if (!store.deleteDonor(Number(req.params.id)).changes) return res.status(404).json({ error: 'Donante no encontrado' });
     res.status(204).end();
   });
+  app.use(express.static(path.join(__dirname, '..', 'public')));
   app.use((_req, res) => res.status(404).json({ error: 'Ruta no encontrada' }));
   app.use((err, _req, res, _next) => {
     const status = new Map([['entity.parse.failed', 400], ['entity.too.large', 413]]).get(err.type) || 500;

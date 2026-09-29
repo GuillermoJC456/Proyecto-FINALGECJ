@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-29T23:00:01.619Z",
+  "browser": "Chromium headless con Playwright",
+  "passed": true,
+  "checks": [
+    "Registro de cuenta desde interfaz",
+    "Login, estado vacío, alta de donante y acciones según rol",
+    "Búsqueda y estado sin resultados",
+    "Error de correo duplicado en formulario",
+    "Vista móvil de 390 px sin desbordamiento de página",
+    "Administrador: cancelar y confirmar eliminación",
+    "Cierre de sesión automático al recibir 401",
+    "Mensaje legible al limitar intentos"
+  ],
+  "pageErrors": []
+}
