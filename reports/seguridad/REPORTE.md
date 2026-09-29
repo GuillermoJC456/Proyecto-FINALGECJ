@@ -1,14 +1,31 @@
-# Reporte de seguridad
+# Reporte de seguridad ejecutado
 
-Ejecución local: 28/09/2026 20:16. Se ejecutaron pruebas automatizadas de abuso en Jest y auditoría de dependencias de producción con `pnpm audit --prod --json`.
+Fecha: 29 de septiembre de 2026. Commit: `65662b01ac42370b5a613a7e5b726ca7e48a9b68`.
+CI/CD: https://github.com/GuillermoJC456/Proyecto-FINALGECJ/actions/runs/36640061750
 
-Resultado de auditoría: 0 vulnerabilidades informadas en todas las severidades. Evidencia original: dependencias.json. Esto no demuestra ausencia de vulnerabilidades desconocidas.
+## Auditoría y pruebas de abuso
 
-Casos aprobados en ../unitarias/jest-results.json:
-- Registro sin asignación de rol por el cliente y login con verificación de contraseña.
-- Rechazo de JWT ausente, alterado, vencido, con audiencia o algoritmo incorrectos.
-- Aislamiento de registros por propietario y borrado exclusivo del administrador.
-- Entradas XSS rechazadas; consultas SQL parametrizadas conservan el esquema ante una cadena SQLi.
-- Límites de solicitudes y tamaño del cuerpo; errores sin detalles internos.
+Auditoría de dependencias de producción: 0 vulnerabilidades conocidas informadas en todas las severidades; evidencia en dependencias.json. Las pruebas Jest verifican permisos, aislamiento de propietarios, contraseñas, tokens alterados/vencidos, entrada XSS/SQLi, límites de solicitudes y errores sin detalles internos.
 
-OWASP ZAP: NO EJECUTADO. El equipo no dispone de Docker/ZAP. No hay alertas DAST ni reporte ZAP que puedan afirmarse como resultados. El workflow .github/workflows/ci-cd.yml deja preparado el escaneo autenticado sobre un contenedor temporal. Al ejecutarlo, descargar el artefacto zap e incorporar zap.html y zap.json. El alcance actual es rol usuario y API; no incluye XSS de navegador ni borrado autorizado como administrador.
+## OWASP ZAP 2.17.0
+
+Escaneos activos y pasivos completados en la API desplegada en Docker dentro de GitHub Actions. Autenticación Bearer con dos cuentas ficticias, una por rol. Destino: http://127.0.0.1:3000. ZAP terminó al 100 % en ambos roles y se vació la cola pasiva antes de exportar.
+
+| Rol | Altas | Medias | Bajas | Instancias informativas | Solicitudes de reglas activas |
+|---|---:|---:|---:|---:|---:|
+| Usuario | 0 | 0 | 0 | 24 | 816 |
+| Administrador | 0 | 0 | 0 | 24 | 800 |
+
+Los contadores proceden de alertsSummary y scanProgress en zap-ejecucion.json. Los reportes HTML/JSON agrupan algunas instancias, por lo que su contador agrupado puede diferir del resumen de la API. Se conservan ambos sin alterar los resultados.
+
+Las reglas XSS reflejado y SQL Injection finalizaron sin alertas. Las fases de XSS persistente se ejecutaron; su fase de explotación no envió solicitudes al no encontrar un punto aplicable. No hay interfaz HTML. Se incluyen 52 entradas de reglas por rol: las reglas personalizadas sin scripts y las que necesitan un servicio OAST externo se registran como omitidas; el detalle está en scanProgress. No se presenta esto como cobertura completa de todo tipo de ataque.
+
+## Revisión de observaciones informativas
+
+Las instancias pertenecen a User Agent Fuzzer. Esta regla detecta diferencias entre respuestas a solicitudes repetidas. El POST puede pasar de 201 a 409 al repetir un correo y el DELETE de 204 a 404 tras eliminar un registro. Se reprodujo ese comportamiento con Mozilla, Googlebot y Mobile Safari, sin diferencias por User-Agent: revision-informativas.json. Se conservan las alertas como informativas y se documenta su relación con operaciones que cambian el estado; no se eliminó la regla para conseguir un resultado favorable.
+
+## Alcance y archivos
+
+Rutas de salud y donantes importadas desde OpenAPI; listado, creación y borrado comprobados con ambos roles. Registro y login se utilizan para preparar el escaneo y tienen pruebas de abuso en Jest; no se ejecutó fuzzing exhaustivo sobre ellos. Reportes: zap-usuario.html/json, zap-administrador.html/json y zap-ejecucion.json. Los tokens y contraseñas se redactan antes de guardar reportes.
+
+Los mismos escaneos se reprodujeron localmente, con el mismo número de instancias por gravedad. Ausencia de alertas de vulnerabilidad no equivale a garantía absoluta de seguridad.

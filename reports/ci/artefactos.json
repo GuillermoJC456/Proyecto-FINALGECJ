@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 11066691383,
+      "node_id": "MDg6QXJ0aWZhY3QxMTA2NjY5MTM4Mw==",
+      "name": "evidencia-calidad-seguridad",
+      "size_in_bytes": 84656,
+      "url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/artifacts/11066691383",
+      "archive_download_url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/artifacts/11066691383/zip",
+      "expired": false,
+      "digest": "sha256:766971e7faf2b36d343f2162e539568999bd6281daf27d13ad876aa99964da93",
+      "created_at": "2026-09-29T22:35:22Z",
+      "updated_at": "2026-09-29T22:35:22Z",
+      "expires_at": "2026-12-28T22:31:22Z",
+      "workflow_run": {
+        "id": 36640061750,
+        "repository_id": 1396657225,
+        "head_repository_id": 1396657225,
+        "head_branch": "main",
+        "head_sha": "65662b01ac42370b5a613a7e5b726ca7e48a9b68"
+      }
+    }
+  ]
+}

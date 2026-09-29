@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-29T22:39:24.411Z",
+  "purpose": "Revisar cambios por estado de datos frente a User Agent Fuzzer",
+  "passed": true,
+  "observations": [
+    {
+      "userAgent": "Mozilla/5.0",
+      "create": 201,
+      "duplicate": 409,
+      "delete": 204,
+      "deleteAgain": 404
+    },
+    {
+      "userAgent": "Googlebot",
+      "create": 201,
+      "duplicate": 409,
+      "delete": 204,
+      "deleteAgain": 404
+    },
+    {
+      "userAgent": "Mobile Safari",
+      "create": 201,
+      "duplicate": 409,
+      "delete": 204,
+      "deleteAgain": 404
+    }
+  ]
+}

@@ -1,9 +1,8 @@
-# Reporte de pruebas unitarias e integración
+# Pruebas unitarias e integración
 
-Ejecución local: 28/09/2026 20:16. Comando: `node node_modules/jest/bin/jest.js --runInBand --coverage --json`.
+Fecha: 29 de septiembre de 2026. Ejecución GitHub: https://github.com/GuillermoJC456/Proyecto-FINALGECJ/actions/runs/36640061750
+Commit analizado: `65662b01ac42370b5a613a7e5b726ca7e48a9b68`.
 
-Resultado: 8 pruebas aprobadas, 0 fallidas, 1 suite aprobada. Cobertura: 100 % en sentencias, ramas, funciones y líneas de src/app.js y src/store.js; umbral exigido: 80 %. src/server.js y scripts/create-admin.js no se instrumentan.
+Jest: 8 pruebas aprobadas, 0 fallidas, 1 suite. Cobertura de líneas, sentencias, ramas y funciones: 100 %, frente a umbral de 80 %. La suite incluye verificación unitaria de contraseñas y pruebas HTTP de integración sobre SQLite en memoria. El alcance instrumentado es src/app.js y src/store.js; no incluye src/server.js ni scripts/create-admin.js.
 
-La suite combina pruebas unitarias del hash y pruebas HTTP de integración con Supertest y SQLite real en memoria. El porcentaje no representa cobertura de todo el despliegue.
-
-Archivos: jest-results.json (casos, estado y duración), ejecucion.txt (salida), coverage/coverage-summary.json (métricas), coverage/lcov.info (importación SonarQube), coverage/lcov-report/index.html (reporte visual).
+Evidencia: jest-results.json; coverage/coverage-summary.json; coverage/lcov.info; coverage/lcov-report/index.html. La salida de la ejecución de GitHub se conserva en ../ci/logs-github.zip. ejecucion.txt corresponde a la comprobación local del mismo código, no al log de GitHub.

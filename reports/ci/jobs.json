@@ -1,0 +1,161 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 109649960114,
+      "run_id": 36640061750,
+      "workflow_name": "Calidad y despliegue de prueba",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/runs/36640061750",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUz9MSc8AAAAZh6Wcsg",
+      "head_sha": "65662b01ac42370b5a613a7e5b726ca7e48a9b68",
+      "url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/jobs/109649960114",
+      "html_url": "https://github.com/GuillermoJC456/Proyecto-FINALGECJ/actions/runs/36640061750/job/109649960114",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-29T22:31:22Z",
+      "started_at": "2026-09-29T22:31:24Z",
+      "completed_at": "2026-09-29T22:35:24Z",
+      "name": "verificar-y-desplegar",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-29T22:31:25Z",
+          "completed_at": "2026-09-29T22:31:26Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-29T22:31:26Z",
+          "completed_at": "2026-09-29T22:31:27Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-29T22:31:27Z",
+          "completed_at": "2026-09-29T22:31:27Z"
+        },
+        {
+          "name": "Run npm install -g pnpm@11.19.0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-29T22:31:27Z",
+          "completed_at": "2026-09-29T22:31:29Z"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-29T22:31:29Z",
+          "completed_at": "2026-09-29T22:31:33Z"
+        },
+        {
+          "name": "Pruebas y auditoría",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-29T22:31:33Z",
+          "completed_at": "2026-09-29T22:31:36Z"
+        },
+        {
+          "name": "SonarQube temporal",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-29T22:31:36Z",
+          "completed_at": "2026-09-29T22:32:46Z"
+        },
+        {
+          "name": "Run SonarSource/sonarqube-scan-action@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-29T22:32:46Z",
+          "completed_at": "2026-09-29T22:33:11Z"
+        },
+        {
+          "name": "Exportar métricas y liberar recursos",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-29T22:33:11Z",
+          "completed_at": "2026-09-29T22:33:13Z"
+        },
+        {
+          "name": "Despliegue automático en entorno de prueba",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-09-29T22:33:13Z",
+          "completed_at": "2026-09-29T22:34:02Z"
+        },
+        {
+          "name": "ZAP con ambos roles y evaluación de alertas",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-09-29T22:34:02Z",
+          "completed_at": "2026-09-29T22:35:21Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-09-29T22:35:21Z",
+          "completed_at": "2026-09-29T22:35:22Z"
+        },
+        {
+          "name": "Retirar entornos temporales",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-09-29T22:35:22Z",
+          "completed_at": "2026-09-29T22:35:22Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-09-29T22:35:22Z",
+          "completed_at": "2026-09-29T22:35:22Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-09-29T22:35:22Z",
+          "completed_at": "2026-09-29T22:35:22Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-09-29T22:35:22Z",
+          "completed_at": "2026-09-29T22:35:22Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/check-runs/109649960114",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000019,
+      "runner_name": "GitHub Actions 1000000019",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

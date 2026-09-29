@@ -1,0 +1,111 @@
+Picked up JAVA_TOOL_OPTIONS: -Djdk.net.unixdomain.tmpdir=C:/nonexistent-donantes-unix
+17:30:26.766 INFO  Scanner configuration file: NONE
+17:30:26.771 INFO  Project root configuration file: [WORKSPACE]\sonar-project.properties
+17:30:26.806 INFO  SonarScanner CLI 8.1.0.6389
+17:30:26.817 INFO  Windows 11 10.0 amd64
+17:30:31.616 INFO  Communicating with SonarQube Community Build 26.9.0.129388
+17:30:31.618 INFO  JRE provisioning is disabled
+17:30:31.619 INFO  Using the java executable '[WORKSPACE]\.tools\java\jdk-21.0.12.1+1\bin\java.exe' from JAVA_HOME
+17:30:31.686 ERROR [stderr] Picked up JAVA_TOOL_OPTIONS: -Djdk.net.unixdomain.tmpdir=C:/nonexistent-donantes-unix
+17:30:31.941 ERROR [stderr] Picked up JAVA_TOOL_OPTIONS: -Djdk.net.unixdomain.tmpdir=C:/nonexistent-donantes-unix
+17:30:32.639 INFO  Starting SonarScanner Engine...
+17:30:32.642 INFO  Java 21.0.12.1 Eclipse Adoptium (64-bit)
+17:30:38.945 INFO  Load global settings
+17:30:39.151 INFO  Load global settings (done) | time=201ms
+17:30:39.157 INFO  Server id: 147B411E-AaDvQpcalHV7gYxp67CY
+17:30:39.179 INFO  Loading required plugins
+17:30:39.180 INFO  Load plugins index
+17:30:39.215 INFO  Load plugins index (done) | time=35ms
+17:30:39.216 INFO  Load/download plugins
+17:30:39.286 INFO  Load/download plugins (done) | time=72ms
+17:30:39.913 INFO  Process project properties
+17:30:39.955 INFO  Process project properties (done) | time=42ms
+17:30:39.991 INFO  Project key: registro-donantes
+17:30:39.992 INFO  Base dir: [WORKSPACE]
+17:30:39.994 INFO  Working dir: [WORKSPACE]\.scannerwork
+17:30:40.017 INFO  Load project settings for component key: 'registro-donantes'
+17:30:40.070 INFO  Load project settings for component key: 'registro-donantes' (done) | time=53ms
+17:30:40.131 INFO  Load quality profiles
+17:30:40.315 INFO  Load quality profiles (done) | time=183ms
+17:30:40.441 INFO  Load active rules
+17:30:41.536 INFO  Load active rules (done) | time=1096ms
+17:30:41.553 INFO  Load analysis cache
+17:30:41.603 INFO  Load analysis cache (8.2 kB) | time=50ms
+17:30:41.805 INFO  Preprocessing files...
+17:30:41.841 INFO  1 language detected in 4 preprocessed files (done) | time=35ms
+17:30:41.844 INFO  Loading plugins for detected languages
+17:30:41.845 INFO  Load/download plugins
+17:30:41.855 INFO  Load/download plugins (done) | time=10ms
+17:30:42.198 INFO  Load project repositories
+17:30:42.510 INFO  Load project repositories (done) | time=312ms
+17:30:42.581 INFO  Indexing files...
+17:30:42.582 INFO  Project configuration:
+17:30:42.583 INFO    Excluded sources for coverage: src/server.js
+17:30:42.607 INFO  4 files indexed (done) | time=25ms
+17:30:42.610 INFO  Quality profile for js: Sonar way
+17:30:42.612 INFO  ------------- Run sensors on module Registro de donantes
+17:30:42.702 INFO  Load metrics repository
+17:30:42.769 INFO  Load metrics repository (done) | time=67ms
+17:30:43.619 INFO  Reflections took 193 ms to scan 1 urls, producing 30 keys and 295 values
+17:30:43.853 INFO  Sensor IaC YAML File Type Classification Sensor [iac]
+17:30:43.859 INFO  Sensor IaC YAML File Type Classification Sensor [iac] (done) | time=6ms
+17:30:43.862 INFO  Sensor IaC hadolint report Sensor [iac]
+17:30:43.864 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=1ms
+17:30:43.865 INFO  Sensor Java Config Sensor [iac]
+17:30:43.866 INFO  There are no files to be analyzed for the Java language
+17:30:43.867 INFO  Sensor Java Config Sensor [iac] (done) | time=3ms
+17:30:43.868 INFO  Sensor IaC Docker Sensor [iac]
+17:30:43.870 INFO  There are no files to be analyzed for the Docker language
+17:30:43.870 INFO  Sensor IaC Docker Sensor [iac] (done) | time=3ms
+17:30:43.871 INFO  Sensor HTML [web]
+17:30:43.882 INFO  Sensor HTML [web] (done) | time=12ms
+17:30:43.883 INFO  Sensor JavaScript/TypeScript Coverage [javascript]
+17:30:43.883 INFO  Analysing [[WORKSPACE]\coverage\lcov.info]
+17:30:43.977 INFO  Sensor JavaScript/TypeScript Coverage [javascript] (done) | time=95ms
+17:30:43.978 INFO  Sensor TextAndSecretsSensor [text]
+17:30:44.012 INFO  Available processors: 8
+17:30:44.013 INFO  Using 8 threads for analysis.
+17:30:44.710 INFO  Start fetching files for the text and secrets analysis
+17:30:44.999 INFO  Using Git CLI to retrieve dirty files
+17:30:45.074 WARN  Retrieving only language associated files, make sure to run the analysis inside a git repository to make use of inclusions specified via "sonar.text.inclusions"
+17:30:45.075 INFO  Starting the text and secrets analysis
+17:30:45.079 INFO  4 source files to be analyzed for the text and secrets analysis
+17:30:45.127 INFO  4/4 source files have been analyzed for the text and secrets analysis
+17:30:45.132 INFO  Sensor TextAndSecretsSensor [text] (done) | time=1154ms
+17:30:45.138 INFO  ------------- Run sensors on project
+17:30:45.804 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+17:30:47.735 INFO  Detected os: Windows 11 arch: amd64 alpine: false. Platform: WIN_X64
+17:30:47.736 INFO  Deploy location [USER]\.sonar\js\node-runtime, tagetRuntime: [USER]\.sonar\js\node-runtime\node.exe,  version: [USER]\.sonar\js\node-runtime\version.txt
+17:30:47.864 INFO  Configured Node.js --max-old-space-size=512.
+17:30:47.865 INFO  Using embedded Node.js runtime.
+17:30:47.865 INFO  Using Node.js executable: '[USER]\.sonar\js\node-runtime\node.exe'.
+17:30:59.396 INFO  Memory configuration: OS (6020 MB), Node.js (704 MB).
+17:30:59.454 INFO  gRPC analyze-project server listening on 127.0.0.1:62416
+17:31:00.110 INFO  Plugin version: [13.8.0.44569]
+17:31:07.888 INFO  Found 0 tsconfig.json file(s): []
+17:31:12.404 INFO  4 source files to be analyzed
+17:31:12.405 INFO  Analyzing 4 file(s) using default options [lib: lib.es2024.d.ts, lib.dom.d.ts]
+17:31:12.406 INFO  4/4 source files have been analyzed
+17:31:12.440 INFO  Hit the cache for 0 out of 4
+17:31:12.442 INFO  Miss the cache for 4 out of 4: ANALYSIS_MODE_INELIGIBLE [4/4]
+17:31:12.443 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=26637ms
+17:31:12.444 INFO  Sensor IaC Project Sensor [iac]
+17:31:12.457 INFO  Sensor IaC Project Sensor [iac] (done) | time=14ms
+17:31:12.457 INFO  Sensor Zero Coverage Sensor
+17:31:12.458 INFO  Sensor Zero Coverage Sensor (done) | time=0ms
+17:31:12.459 INFO  ------------- Gather SCA dependencies on project
+17:31:12.474 INFO  Dependency analysis skipped
+17:31:12.478 INFO  SCM Publisher is disabled
+17:31:12.489 INFO  CPD Executor 1 file had no CPD blocks
+17:31:12.490 INFO  CPD Executor Calculating CPD for 2 files
+17:31:12.552 INFO  CPD Executor CPD calculation finished (done) | time=62ms
+17:31:12.836 INFO  Analysis report generated in 260ms, dir size=329.3 kB
+17:31:13.193 INFO  Analysis report compressed in 355ms, zip size=52.4 kB
+17:31:13.385 INFO  Analysis report uploaded in 193ms
+17:31:13.390 INFO  ------------- Check Quality Gate status
+17:31:13.391 INFO  Waiting for the analysis report to be processed (max 300s)
+17:31:23.567 INFO  QUALITY GATE STATUS: PASSED - View details on http://127.0.0.1:9000/dashboard?id=registro-donantes
+17:31:24.578 INFO  Analysis total time: 45.203 s
+17:31:24.691 INFO  SonarScanner Engine completed successfully
+17:31:24.777 INFO  EXECUTION SUCCESS
+17:31:24.779 INFO  Total time: 58.016s

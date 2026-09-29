@@ -1,0 +1,122 @@
+{
+  "total": 2,
+  "p": 1,
+  "ps": 500,
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 500,
+    "total": 2
+  },
+  "effortTotal": 10,
+  "issues": [
+    {
+      "key": "ce8b1a26-4c7d-49c1-a374-99ab5dbd2b7b",
+      "rule": "javascript:S6353",
+      "severity": "MINOR",
+      "component": "registro-donantes:src/app.js",
+      "project": "registro-donantes",
+      "line": 7,
+      "hash": "2603c9f1016dedf6026a1693e02240d9",
+      "textRange": {
+        "startLine": 7,
+        "endLine": 7,
+        "startOffset": 54,
+        "endOffset": 66
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Use concise character class syntax '\\w' instead of '[a-zA-Z0-9_]'.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "",
+      "tags": [
+        "regex",
+        "editable-source",
+        "type-dependent"
+      ],
+      "creationDate": "2026-09-29T17:28:29-0500",
+      "updateDate": "2026-09-29T17:28:29-0500",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CLEAR",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "10b58a79-1240-4b42-a010-b7878b2d153e",
+      "rule": "javascript:S3358",
+      "severity": "MAJOR",
+      "component": "registro-donantes:src/app.js",
+      "project": "registro-donantes",
+      "line": 69,
+      "hash": "da8a27b7d02d4f11778878ce6ec0e75c",
+      "textRange": {
+        "startLine": 69,
+        "endLine": 69,
+        "startOffset": 62,
+        "endOffset": 105
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ],
+      "creationDate": "2026-09-29T17:28:29-0500",
+      "updateDate": "2026-09-29T17:28:29-0500",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CLEAR",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    }
+  ],
+  "components": [
+    {
+      "key": "registro-donantes",
+      "enabled": true,
+      "qualifier": "TRK",
+      "name": "Registro de donantes",
+      "longName": "Registro de donantes"
+    },
+    {
+      "key": "registro-donantes:src/app.js",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "app.js",
+      "longName": "src/app.js",
+      "path": "src/app.js"
+    }
+  ],
+  "facets": []
+}

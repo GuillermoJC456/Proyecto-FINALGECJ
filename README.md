@@ -36,17 +36,23 @@ pnpm audit --prod --audit-level high
 
 Jest exige al menos 80 % en líneas, sentencias, funciones y ramas de `src/app.js` y `src/store.js`. El arranque `src/server.js` y la utilidad administrativa quedan fuera de la cobertura instrumentada. Consultar `coverage/lcov-report/index.html` y `coverage/coverage-summary.json`.
 
-## CI/CD y análisis externos
+## CI/CD y reportes reales
 
-Subir este directorio a un repositorio GitHub cuya rama principal sea `main`. El workflow ejecuta pruebas y auditoría en PR y push. En main (o ejecución manual), analiza SonarQube, espera su quality gate y despliega un contenedor en el runner dentro del entorno GitHub `test`. Ejecuta ZAP autenticado con un usuario de prueba y después destruye el contenedor. Es un entorno temporal, sin URL pública ni retención de datos; no es un servidor de staging permanente.
+Repositorio: https://github.com/GuillermoJC456/Proyecto-FINALGECJ
 
-Configurar los secretos de repositorio `SONAR_HOST_URL` y `SONAR_TOKEN`, y el proyecto SonarQube `registro-donantes`, accesible desde el runner. Configurar su quality gate con cobertura mínima de 80 %, cero vulnerabilidades y revisión de hotspots. Sin esos secretos el job falla explícitamente y no despliega. En PR se ejecutan solamente las verificaciones que no necesitan secretos.
+El workflow ejecuta instalación reproducible, Jest con umbral de 80 %, auditoría de dependencias y SonarQube Community Build temporal. Cambia la contraseña inicial de SonarQube, genera un token efímero, importa LCOV y espera su quality gate. No requiere configurar un servidor SonarQube ni secretos del repositorio. El contenedor se elimina al finalizar.
 
-SonarQube recibe el LCOV generado por Jest; el pipeline exporta cobertura, bugs, vulnerabilidades, code smells, deuda técnica (`sqale_index`, minutos), duplicación y hotspots. ZAP guarda HTML y JSON como artefactos. Los códigos de salida de advertencia o fallo bloquean el job para revisión; no se ignoran alertas automáticamente.
+En push a `main` y ejecución manual, construye la imagen Docker, despliega la API en el runner, verifica `/health` y ejecuta ZAP con los roles usuario y administrador. Exporta los reportes HTML/JSON y bloquea el job ante alertas altas o medias. En PR ejecuta pruebas y SonarQube. El entorno de prueba es temporal y privado al runner, no una página web pública permanente.
 
-`openapi.json` describe las rutas de negocio usadas por ZAP. El escaneo usa rol usuario y no cubre el borrado autorizado de administrador ni los flujos públicos de autenticación; éstos tienen pruebas automatizadas. ZAP API utiliza su política orientada a API, por lo que no debe presentarse como un escaneo completo de XSS de navegador. Las entradas XSS se verifican además con Jest. Un futuro frontend deberá codificar las salidas según contexto.
+Los resultados de la entrega están en `reports/unitarias`, `reports/seguridad` y `reports/sonarqube`. `reports/ci` identifica las ejecuciones de GitHub y sus commits. El análisis local inicial de SonarQube se conserva como evidencia de las dos observaciones corregidas; las métricas finales están fuera de la subcarpeta `inicial`.
 
-Documentación oficial: [ZAP API Scan](https://www.zaproxy.org/docs/docker/api-scan/), [cobertura JavaScript en SonarQube](https://docs.sonarsource.com/sonarqube-server/2025.5/analyzing-source-code/test-coverage/javascript-typescript-test-coverage), [acción SonarQube](https://github.com/SonarSource/sonarqube-scan-action).
+### Repetir ZAP
+
+Utilizar exclusivamente una instancia desechable con datos ficticios. Arrancar ZAP daemon en `127.0.0.1:8090` con clave API. Crear `zapusuario` mediante `/register` y `zapadministrador` mediante `pnpm admin`, con la misma contraseña temporal. Definir `SCAN_PASSWORD` y `ZAP_API_KEY`, y ejecutar `python scripts/zap-scan.py`. La herramienta acepta únicamente destino local; importa `openapi.json`, establece Bearer por rol y produce reportes sin los tokens de autenticación.
+
+El escaneo cubre salud y rutas de donantes, incluyendo el borrado con ambos roles. Los flujos públicos de registro/login tienen pruebas automatizadas y se utilizan para preparar el escaneo. La API responde JSON; no existe una interfaz HTML sobre la cual evaluar XSS de navegador. Las reglas activas de XSS/SQLi y los casos de abuso aportan evidencia dentro de ese alcance.
+
+Documentación oficial: [ZAP API](https://www.zaproxy.org/docs/api/), [cobertura JavaScript en SonarQube](https://docs.sonarsource.com/sonarqube-server/2025.5/analyzing-source-code/test-coverage/javascript-typescript-test-coverage), [acción SonarQube](https://github.com/SonarSource/sonarqube-scan-action).
 
 ## Límites del prototipo
 
