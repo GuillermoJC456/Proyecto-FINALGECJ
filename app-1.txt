@@ -1,0 +1,74 @@
+
+Programa en app.js
+
+
+const express = require('express');
+const jwt = require('jsonwebtoken');
+
+const app = express();
+app.use(express.json());
+
+const CLAVE_SECRETA = 'mi_clave_secreta';
+app.post('/login', (req, res) => {
+  const { usuario, rol } = req.body;
+  const token = jwt.sign({ usuario, rol }, CLAVE_SECRETA);
+  res.json({ token });
+});
+function verificarToken(req, res, next) {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ error: 'Falta el token' });
+  try {
+    const datos = jwt.verify(token, CLAVE_SECRETA);
+    req.usuarioLogueado = datos;
+    next();
+  } catch (error) {
+    res.status(403).json({ error: 'Token inválido' });
+  }
+}
+app.delete('/donante', verificarToken, (req, res) => {
+  if (req.usuarioLogueado.rol !== 'admin') {
+    return res.status(403).json({ error: 'No tienes permiso de Administrador' });
+  }
+  res.json({ mensaje: 'Donante eliminado con éxito' });
+});
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
+module.exports = app;
+
+Programa en app.test.js
+
+const request = require('supertest');
+const app = require('./app');
+
+describe('Pruebas básicas de seguridad', () => {
+
+  it('No debe permitir eliminar si no se envía token', async () => {
+    const respuesta = await request(app).delete('/donante');
+    expect(respuesta.statusCode).toBe(401);
+  });
+
+  it('No debe permitir eliminar a un usuario normal', async () => {
+    // 1. Pedimos token de usuario normal
+    const login = await request(app).post('/login').send({ usuario: 'Pedro', rol: 'user' });
+    const token = login.body.token;
+    // 2. Intentamos borrar
+    const respuesta = await request(app)
+      .delete('/donante')
+      .set('Authorization', token);
+
+    expect(respuesta.statusCode).toBe(403);
+  });
+  it('Debe permitir eliminar si es Administrador', async () => {
+
+    const login = await request(app).post('/login').send({ usuario: 'Ana', rol: 'admin' });
+    const token = login.body.token;
+
+    const respuesta = await request(app)
+      .delete('/donante')
+      .set('Authorization', token);
+
+    expect(respuesta.statusCode).toBe(200);
+  });
+});

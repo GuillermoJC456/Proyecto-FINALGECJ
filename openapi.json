@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Registro de donantes",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Salud",
+        "responses": {
+          "200": {
+            "description": "Operación correcta"
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "Sin autenticación"
+          }
+        }
+      }
+    },
+    "/donantes": {
+      "get": {
+        "summary": "Listar donantes propios; administrador ve todos",
+        "responses": {
+          "200": {
+            "description": "Operación correcta"
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "Sin autenticación"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Registrar donante",
+        "responses": {
+          "200": {
+            "description": "Operación correcta"
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "Sin autenticación"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Ana Pérez"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "ana@example.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/donantes/{id}": {
+      "delete": {
+        "summary": "Eliminar donante (administrador)",
+        "responses": {
+          "200": {
+            "description": "Operación correcta"
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "Sin autenticación"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ]
+      }
+    }
+  }
+}
