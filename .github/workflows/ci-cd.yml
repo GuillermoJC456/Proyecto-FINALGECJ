@@ -7,88 +7,72 @@ on:
 permissions:
   contents: read
 jobs:
-  test:
+  verificar-y-desplegar:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SONAR_HOST_URL: http://127.0.0.1:9000
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
       - run: npm install -g pnpm@11.19.0
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test
-      - run: pnpm audit --prod --audit-level high
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cobertura
-          path: coverage/
-  sonar:
-    if: github.event_name != 'pull_request'
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/download-artifact@v4
-        with:
-          name: cobertura
-          path: coverage/
-      - name: Verificar configuración requerida
-        env:
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: test -n "$SONAR_HOST_URL" && test -n "$SONAR_TOKEN"
-      - uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      - name: Exportar métricas del análisis completado
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: Pruebas y auditoría
         run: |
-          mkdir -p reports
-          curl --fail --silent --show-error -u "$SONAR_TOKEN:" "$SONAR_HOST_URL/api/measures/component?component=registro-donantes&metricKeys=coverage,bugs,vulnerabilities,code_smells,sqale_index,duplicated_lines_density,security_hotspots" -o reports/sonar-metrics.json
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sonar-metrics
-          path: reports/sonar-metrics.json
-  staging:
-    if: github.event_name != 'pull_request'
-    needs: [test, sonar]
-    runs-on: ubuntu-latest
-    environment: test
-    steps:
-      - uses: actions/checkout@v4
-      - name: Construir y desplegar entorno temporal aislado
+          mkdir -p reports/unitarias reports/seguridad
+          pnpm exec jest --runInBand --coverage --json --outputFile=reports/unitarias/jest-results.json
+          pnpm audit --prod --json > reports/seguridad/dependencias.json
+      - name: SonarQube temporal
+        run: |
+          sudo sysctl -w vm.max_map_count=524288
+          docker run -d --name sonar -p 127.0.0.1:9000:9000 sonarqube:26.9.0.129388-community
+          python scripts/sonar-ci.py setup
+      - uses: SonarSource/sonarqube-scan-action@v6
+      - name: Exportar métricas y liberar recursos
+        run: |
+          python scripts/sonar-ci.py export
+          docker stop sonar
+      - name: Despliegue automático en entorno de prueba
+        if: github.event_name != 'pull_request'
         run: |
           docker build -t donantes:test .
           JWT_SECRET=$(openssl rand -hex 32)
+          SCAN_PASSWORD=$(openssl rand -hex 16)
+          ZAP_API_KEY=$(openssl rand -hex 16)
           echo "::add-mask::$JWT_SECRET"
+          echo "::add-mask::$SCAN_PASSWORD"
+          echo "::add-mask::$ZAP_API_KEY"
+          echo "SCAN_PASSWORD=$SCAN_PASSWORD" >> "$GITHUB_ENV"
+          echo "ZAP_API_KEY=$ZAP_API_KEY" >> "$GITHUB_ENV"
           docker run -d --name donantes -p 127.0.0.1:3000:3000 -e JWT_SECRET="$JWT_SECRET" donantes:test
           for attempt in $(seq 1 30); do
-            if curl --fail --silent http://localhost:3000/health; then exit 0; fi
+            if curl --fail --silent http://127.0.0.1:3000/health; then break; fi
             sleep 2
           done
-          exit 1
-      - name: ZAP autenticado sobre API de prueba
+          curl --fail http://127.0.0.1:3000/health
+          docker exec -e ADMIN_USERNAME=zapadministrador -e ADMIN_PASSWORD="$SCAN_PASSWORD" donantes node scripts/create-admin.js
+          curl --fail http://127.0.0.1:3000/register -H 'Content-Type: application/json' -d "{\"username\":\"zapusuario\",\"password\":\"$SCAN_PASSWORD\"}"
+          docker run -d --name zap --network host -v "$PWD:$PWD:rw" ghcr.io/zaproxy/zaproxy:stable zap.sh -daemon -host 127.0.0.1 -port 8090 -config api.key="$ZAP_API_KEY"
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent "http://127.0.0.1:8090/JSON/core/view/version/?apikey=$ZAP_API_KEY"; then break; fi
+            sleep 2
+          done
+      - name: ZAP con ambos roles y evaluación de alertas
+        if: github.event_name != 'pull_request'
         run: |
-          mkdir -p reports
-          chmod 777 reports
-          USER_PASSWORD=$(openssl rand -hex 16)
-          echo "::add-mask::$USER_PASSWORD"
-          curl --fail -s http://localhost:3000/register -H 'Content-Type: application/json' -d "{\"username\":\"zapuser\",\"password\":\"$USER_PASSWORD\"}"
-          TOKEN=$(curl --fail -s http://localhost:3000/login -H 'Content-Type: application/json' -d "{\"username\":\"zapuser\",\"password\":\"$USER_PASSWORD\"}" | jq -r .token)
-          test "$TOKEN" != null
-          echo "::add-mask::$TOKEN"
-          docker run --rm --network host -v "$PWD:/zap/wrk:rw" -e ZAP_AUTH_HEADER=Authorization -e ZAP_AUTH_HEADER_VALUE="Bearer $TOKEN" -e ZAP_AUTH_HEADER_SITE=localhost ghcr.io/zaproxy/zaproxy:stable zap-api-scan.py -t /zap/wrk/openapi.json -f openapi -r reports/zap.html -J reports/zap.json
+          python scripts/zap-scan.py
+          python -c "import json; r=json.load(open('reports/seguridad/zap-ejecucion.json')); assert all(int(x['alertsSummary']['alertsSummary'].get(k,0))==0 for x in r['roles'] for k in ['High','Medium']), 'Alertas altas o medias pendientes'"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: zap
-          path: reports/
-      - name: Retirar entorno temporal
+          name: evidencia-calidad-seguridad
+          path: |
+            coverage/
+            reports/
+      - name: Retirar entornos temporales
         if: always()
-        run: docker rm -f donantes || true
+        run: docker rm -f donantes zap sonar || true
