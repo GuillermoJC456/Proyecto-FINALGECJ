@@ -13,7 +13,6 @@ function message(id, text) {
 }
 function setMode(value) {
   mode = value;
-  el('auth-form').action = value === 'login' ? '/login' : '/register';
   const login = mode === 'login';
   el('login-tab').classList.toggle('active', login);
   el('register-tab').classList.toggle('active', !login);

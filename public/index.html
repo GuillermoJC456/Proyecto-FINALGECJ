@@ -30,7 +30,7 @@
         <div class="tabs" aria-label="Acceso a la cuenta"><button id="login-tab" class="tab active" type="button" aria-pressed="true">Iniciar sesión</button><button id="register-tab" class="tab" type="button" aria-pressed="false">Crear cuenta</button></div>
         <h2 id="auth-title">Qué bueno verte.</h2>
         <p id="auth-description" class="muted">Ingresa a tu cuenta para continuar.</p>
-        <form id="auth-form" method="post" action="/login">
+        <form id="auth-form">
           <label for="username">Usuario</label>
           <input id="username" name="username" autocomplete="username" required minlength="3" maxlength="40" pattern="[A-Za-z0-9_]{3,40}" placeholder="Tu nombre de usuario" aria-describedby="username-hint">
           <p id="username-hint" class="field-hint">De 3 a 40 letras, números o guion bajo.</p>
@@ -62,7 +62,7 @@
   <dialog id="donor-dialog" aria-labelledby="donor-title">
     <div class="dialog-heading"><div><p class="eyebrow">SUMA UNA PERSONA</p><h2 id="donor-title">Registrar donante</h2></div><button class="icon-button" id="close-donor" type="button" aria-label="Cerrar formulario">×</button></div>
     <p class="muted">Agrega sus datos de contacto al directorio.</p>
-    <form id="donor-form" method="post" action="/donantes"><label for="donor-name">Nombre completo</label><input id="donor-name" name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Ej. Ana Pérez"><label for="donor-email">Correo electrónico</label><input id="donor-email" name="email" required type="email" maxlength="254" autocomplete="email" placeholder="ana@ejemplo.com"><p id="donor-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-donor" class="button secondary" type="button">Cancelar</button><button id="save-donor" class="button primary" type="submit">Guardar donante</button></div></form>
+    <form id="donor-form"><label for="donor-name">Nombre completo</label><input id="donor-name" name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Ej. Ana Pérez"><label for="donor-email">Correo electrónico</label><input id="donor-email" name="email" required type="email" maxlength="254" autocomplete="email" placeholder="ana@ejemplo.com"><p id="donor-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-donor" class="button secondary" type="button">Cancelar</button><button id="save-donor" class="button primary" type="submit">Guardar donante</button></div></form>
   </dialog>
   <dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">¿Eliminar este registro?</h2><p id="delete-description"></p><p class="muted small">Esta acción no se puede deshacer.</p><p id="delete-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-delete" class="button secondary" type="button">Conservar</button><button id="confirm-delete" class="button danger" type="button">Eliminar donante</button></div></dialog>
 </body>

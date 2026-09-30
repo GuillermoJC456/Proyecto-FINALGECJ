@@ -53,6 +53,7 @@ test('interfaz pública y recursos con cabeceras de seguridad', async () => {
   expect(page.text).toContain('Donantes');
   expect(page.headers['content-security-policy']).toContain("script-src 'self'");
   expect(page.headers['content-security-policy']).toContain("font-src 'self';");
+  expect(page.headers['content-security-policy']).toContain("form-action 'none';");
   expect((await request(app).get('/app.js')).type).toBe('text/javascript');
   expect((await request(app).get('/styles.css')).type).toBe('text/css');
 });

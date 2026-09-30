@@ -13,7 +13,8 @@ function createApp({ store, secret, authLimit = 20 }) {
   const app = express();
   app.disable('x-powered-by');
   app.disable('etag');
-  app.use(helmet({ contentSecurityPolicy: { directives: { styleSrc: ["'self'"], fontSrc: ["'self'"] } } }));
+  // La interfaz usa fetch con JSON y Bearer; se bloquea todo envío HTML nativo.
+  app.use(helmet({ contentSecurityPolicy: { directives: { styleSrc: ["'self'"], fontSrc: ["'self'"], formAction: ["'none'"] } } }));
   app.use((_req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
