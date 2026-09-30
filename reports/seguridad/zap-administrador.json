@@ -1,8 +1,8 @@
 {
 	"@programName": "ZAP",
 	"@version": "2.17.0",
-	"@generated": "Tue, 29 Sept 2026 22:35:21",
-	"created": "2026-09-29T22:35:21.248765029Z",
+	"@generated": "Wed, 30 Sept 2026 18:17:25",
+	"created": "2026-09-30T18:17:25.122802521Z",
 	"insights":[
 		{
 			"level": "Low",
@@ -26,7 +26,7 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.code.2xx",
 			"description": "Percentage of responses with status code 2xx",
-			"statistic": "6"
+			"statistic": "15"
 		},
 		{
 			"level": "Info",
@@ -34,7 +34,7 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.code.4xx",
 			"description": "Percentage of responses with status code 4xx",
-			"statistic": "93"
+			"statistic": "84"
 		},
 		{
 			"level": "Info",
@@ -42,7 +42,15 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.endpoint.ctype.application/json",
 			"description": "Percentage of endpoints with content type application/json",
-			"statistic": "80"
+			"statistic": "60"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://127.0.0.1:3000",
+			"key": "insight.endpoint.ctype.text/html",
+			"description": "Percentage of endpoints with content type text/html",
+			"statistic": "20"
 		},
 		{
 			"level": "Info",
@@ -132,7 +140,7 @@
 					"reference": "<p>https://owasp.org/wstg</p>",
 					"cweid": "0",
 					"wascid": "0",
-					"sourceid": "803"
+					"sourceid": "811"
 				}
 			]
 		}

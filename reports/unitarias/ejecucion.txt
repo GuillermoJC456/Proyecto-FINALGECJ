@@ -6,8 +6,8 @@ All files |     100 |      100 |     100 |     100 |
  store.js |     100 |      100 |     100 |     100 |                   
 ----------|---------|----------|---------|---------|-------------------
 Test Suites: 1 passed, 1 total
-Tests:       8 passed, 8 total
+Tests:       9 passed, 9 total
 Snapshots:   0 total
-Time:        5.482 s
+Time:        23.755 s
 Ran all test suites.
 Test results written to: reports\unitarias\jest-results.json

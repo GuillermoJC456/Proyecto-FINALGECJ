@@ -1,7 +1,7 @@
 # Reporte de seguridad ejecutado
 
-Fecha: 29 de septiembre de 2026. Commit: `65662b01ac42370b5a613a7e5b726ca7e48a9b68`.
-CI/CD: https://github.com/GuillermoJC456/Proyecto-FINALGECJ/actions/runs/36640061750
+Fecha: 30 de septiembre de 2026. Commit: `e4ba12e80748d1cf6f0c6d05af330f079c675e4d`.
+CI/CD: https://github.com/GuillermoJC456/Proyecto-FINALGECJ/actions/runs/36756949259
 
 ## Auditoría y pruebas de abuso
 
@@ -13,12 +13,12 @@ Escaneos activos y pasivos completados en la API desplegada en Docker dentro de 
 
 | Rol | Altas | Medias | Bajas | Instancias informativas | Solicitudes de reglas activas |
 |---|---:|---:|---:|---:|---:|
-| Usuario | 0 | 0 | 0 | 24 | 816 |
-| Administrador | 0 | 0 | 0 | 24 | 800 |
+| Usuario | 0 | 0 | 0 | 24 | 827 |
+| Administrador | 0 | 0 | 0 | 24 | 802 |
 
 Los contadores proceden de alertsSummary y scanProgress en zap-ejecucion.json. Los reportes HTML/JSON agrupan algunas instancias, por lo que su contador agrupado puede diferir del resumen de la API. Se conservan ambos sin alterar los resultados.
 
-Las reglas XSS reflejado y SQL Injection finalizaron sin alertas. Las fases de XSS persistente se ejecutaron; su fase de explotación no envió solicitudes al no encontrar un punto aplicable. No hay interfaz HTML. Se incluyen 52 entradas de reglas por rol: las reglas personalizadas sin scripts y las que necesitan un servicio OAST externo se registran como omitidas; el detalle está en scanProgress. No se presenta esto como cobertura completa de todo tipo de ataque.
+Las reglas XSS reflejado y SQL Injection finalizaron sin alertas. Las fases de XSS persistente se ejecutaron; su fase de explotación no envió solicitudes al no encontrar un punto aplicable. La interfaz usa recursos locales, una política CSP y textContent para los datos; su flujo se comprobó por separado con Chromium. Se incluyen 52 entradas de reglas por rol: las reglas personalizadas sin scripts y las que necesitan un servicio OAST externo se registran como omitidas; el detalle está en scanProgress. No se presenta esto como cobertura completa de todo tipo de ataque.
 
 ## Revisión de observaciones informativas
 
@@ -28,4 +28,4 @@ Las instancias pertenecen a User Agent Fuzzer. Esta regla detecta diferencias en
 
 Rutas de salud y donantes importadas desde OpenAPI; listado, creación y borrado comprobados con ambos roles. Registro y login se utilizan para preparar el escaneo y tienen pruebas de abuso en Jest; no se ejecutó fuzzing exhaustivo sobre ellos. Reportes: zap-usuario.html/json, zap-administrador.html/json y zap-ejecucion.json. Los tokens y contraseñas se redactan antes de guardar reportes.
 
-Los mismos escaneos se reprodujeron localmente, con el mismo número de instancias por gravedad. Ausencia de alertas de vulnerabilidad no equivale a garantía absoluta de seguridad.
+La versión anterior de la API también se comprobó localmente; esta entrega utiliza las mediciones de CI del commit indicado. Ausencia de alertas de vulnerabilidad no equivale a garantía absoluta de seguridad.

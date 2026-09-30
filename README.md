@@ -63,3 +63,5 @@ Se requieren HTTPS y un proxy configurado correctamente antes de exponerlo. El l
 ## Verificación de la interfaz
 
 El reporte `reports/interfaz/prueba-navegador.json` registra la comprobación real en Chromium de registro, login, alta, búsqueda, duplicados, permisos, confirmación de borrado, sesión vencida y vista móvil. Esta comprobación es independiente de la cobertura Jest del backend.
+
+Los formularios operan mediante `fetch` con JSON y Bearer. La política CSP bloquea los envíos HTML nativos, incluso si JavaScript no carga, y solo permite estilos y fuentes del mismo origen.

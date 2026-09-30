@@ -2,23 +2,23 @@
   "total_count": 1,
   "artifacts": [
     {
-      "id": 11066691383,
-      "node_id": "MDg6QXJ0aWZhY3QxMTA2NjY5MTM4Mw==",
+      "id": 11117865867,
+      "node_id": "MDg6QXJ0aWZhY3QxMTExNzg2NTg2Nw==",
       "name": "evidencia-calidad-seguridad",
-      "size_in_bytes": 84656,
-      "url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/artifacts/11066691383",
-      "archive_download_url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/artifacts/11066691383/zip",
+      "size_in_bytes": 129416,
+      "url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/artifacts/11117865867",
+      "archive_download_url": "https://api.github.com/repos/GuillermoJC456/Proyecto-FINALGECJ/actions/artifacts/11117865867/zip",
       "expired": false,
-      "digest": "sha256:766971e7faf2b36d343f2162e539568999bd6281daf27d13ad876aa99964da93",
-      "created_at": "2026-09-29T22:35:22Z",
-      "updated_at": "2026-09-29T22:35:22Z",
-      "expires_at": "2026-12-28T22:31:22Z",
+      "digest": "sha256:bf5f9196499d56a0ba535ecd7318cec5f4090b428bf02edefaf2b609081908ac",
+      "created_at": "2026-09-30T18:17:26Z",
+      "updated_at": "2026-09-30T18:17:26Z",
+      "expires_at": "2026-12-29T18:12:49Z",
       "workflow_run": {
-        "id": 36640061750,
+        "id": 36756949259,
         "repository_id": 1396657225,
         "head_repository_id": 1396657225,
         "head_branch": "main",
-        "head_sha": "65662b01ac42370b5a613a7e5b726ca7e48a9b68"
+        "head_sha": "e4ba12e80748d1cf6f0c6d05af330f079c675e4d"
       }
     }
   ]

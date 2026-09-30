@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-29T23:00:01.619Z",
+  "date": "2026-09-30T18:12:55.685Z",
   "browser": "Chromium headless con Playwright",
   "passed": true,
   "checks": [
@@ -10,7 +10,8 @@
     "Vista móvil de 390 px sin desbordamiento de página",
     "Administrador: cancelar y confirmar eliminación",
     "Cierre de sesión automático al recibir 401",
-    "Mensaje legible al limitar intentos"
+    "Mensaje legible al limitar intentos",
+    "Sin JavaScript, CSP bloquea el envío nativo y evita contraseñas en la URL"
   ],
   "pageErrors": []
 }
